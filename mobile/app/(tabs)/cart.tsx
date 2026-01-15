@@ -3,7 +3,7 @@ import { Colors } from "../../constants/colors";
 import { useCart } from "../context/CartContext";
 
 export default function Cart() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, clearCart, removeFromCart } = useCart();
 
   const total = cart.reduce((sum, item) => {
     const price = Number(item.price.replace(/\D/g, ""));
