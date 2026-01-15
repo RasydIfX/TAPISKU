@@ -1,6 +1,6 @@
 import { View, Text, Pressable, StyleSheet } from "react-native";
 import { router } from "expo-router";
-import { Colors } from "../constants/colors";
+import { Colors } from "../../constants/colors";
 
 export default function Profile() {
   return (
