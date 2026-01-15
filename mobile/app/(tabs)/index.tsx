@@ -1,7 +1,17 @@
-import {View,  Text,  FlatList,  StyleSheet,  TextInput,  Pressable,  Image,} from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TextInput,
+  Pressable,
+  Image,
+  Alert,
+} from "react-native";
 import { useState } from "react";
 import { router } from "expo-router";
 import { Colors } from "../../constants/colors";
+import { useCart } from "../context/CartContext";
 
 const DATA = [
   {
@@ -21,6 +31,9 @@ const DATA = [
 export default function Home() {
   const [search, setSearch] = useState("");
 
+  // ✅ CART GLOBAL
+  const { cart, addToCart } = useCart();
+
   const filteredData = DATA.filter((item) =>
     item.name.toLowerCase().includes(search.toLowerCase())
   );
@@ -28,6 +41,11 @@ export default function Home() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>🧵 TapisKu Lampung</Text>
+
+      {/* INFO KERANJANG */}
+      <Pressable onPress={() => router.push("/cart")}>
+        <Text style={styles.cartInfo}>🛒 Keranjang: {cart.length}</Text>
+      </Pressable>
 
       {/* SEARCH INPUT */}
       <TextInput
@@ -42,22 +60,35 @@ export default function Home() {
         data={filteredData}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <Pressable
-            onPress={() =>
-              router.push({
-                pathname: "/product/[id]",
-                params: item,
-              })
-            }
-          >
-            <View style={styles.card}>
-              {/* GAMBAR PRODUK */}
+          <View style={styles.card}>
+            {/* DETAIL PRODUK */}
+            <Pressable
+              onPress={() =>
+                router.push({
+                  pathname: "/product/[id]",
+                  params: item,
+                })
+              }
+            >
               <Image source={item.image} style={styles.image} />
-
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>{item.price}</Text>
-            </View>
-          </Pressable>
+            </Pressable>
+
+            {/* TAMBAH KE KERANJANG */}
+            <Pressable
+              style={styles.addButton}
+              onPress={() => {
+                addToCart(item);
+                Alert.alert(
+                  "Berhasil",
+                  `${item.name} ditambahkan ke keranjang`
+                );
+              }}
+            >
+              <Text style={styles.addText}>Tambah ke Keranjang</Text>
+            </Pressable>
+          </View>
         )}
       />
     </View>
@@ -74,6 +105,11 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     color: Colors.primary,
+    marginBottom: 6,
+  },
+  cartInfo: {
+    color: Colors.gold,
+    fontWeight: "bold",
     marginBottom: 12,
   },
   search: {
@@ -105,6 +141,17 @@ const styles = StyleSheet.create({
   price: {
     marginTop: 4,
     color: Colors.primary,
+    fontWeight: "bold",
+  },
+  addButton: {
+    backgroundColor: Colors.primary,
+    padding: 10,
+    borderRadius: 8,
+    marginTop: 10,
+  },
+  addText: {
+    color: "#fff",
+    textAlign: "center",
     fontWeight: "bold",
   },
 });
