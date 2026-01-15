@@ -17,12 +17,25 @@ export default function RootLayout() {
     <CartProvider>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          {/* 🔐 LOGIN SEBAGAI HALAMAN DEPAN */}
+          <Stack.Screen
+            name="login"
+            options={{ headerShown: false }}
+          />
+
+          {/* 🏠 TAB UTAMA (HOME, CART, DLL) */}
+          <Stack.Screen
+            name="(tabs)"
+            options={{ headerShown: false }}
+          />
+
+          {/* (OPSIONAL) MODAL */}
           <Stack.Screen
             name="modal"
             options={{ presentation: "modal", title: "Modal" }}
           />
         </Stack>
+
         <StatusBar style="auto" />
       </ThemeProvider>
     </CartProvider>

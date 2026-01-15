@@ -5,7 +5,7 @@ import { HapticTab } from "@/components/haptic-tab";
 import { IconSymbol } from "@/components/ui/icon-symbol";
 import { Colors } from "@/constants/theme";
 import { useColorScheme } from "@/hooks/use-color-scheme";
-import { Ionicons } from "@expo/vector-icons"
+import { Ionicons } from "@expo/vector-icons";
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -36,6 +36,17 @@ export default function TabLayout() {
           title: "Cart",
           tabBarIcon: ({ color }) => (
             <Ionicons name="cart" size={28} color={color} />
+          ),
+        }}
+      />
+
+      {/* PROFILE */}
+      <Tabs.Screen
+        name="../profile"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="person" size={28} color={color} />
           ),
         }}
       />
