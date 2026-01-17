@@ -1,13 +1,4 @@
-import {
-  View,
-  Text,
-  FlatList,
-  StyleSheet,
-  TextInput,
-  Pressable,
-  Image,
-  Alert,
-} from "react-native";
+import {View,Text,FlatList,StyleSheet,TextInput,Pressable,Image,Alert,} from "react-native";
 import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { Colors } from "../../constants/colors";
