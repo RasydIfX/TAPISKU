@@ -27,6 +27,7 @@ export default function History() {
           </View>
         )}
       />
+      
     </View>
   );
 }
