@@ -25,9 +25,10 @@ export default function History() {
             <Text>Tanggal: {item.date}</Text>
             <Text>Total: Rp {item.total.toLocaleString("id-ID")}</Text>
           </View>
+          
         )}
       />
-      
+
     </View>
   );
 }
