@@ -21,23 +21,30 @@ export default function Home() {
   // ✅ CART GLOBAL
   const { cart, addToCart } = useCart();
 
-  // ✅ FETCH DARI APIDOG
+  // ✅ FETCH DARI APIDOG (AMAN)
   useEffect(() => {
-    fetch("https://mock.apidog.com/m1/1178326-1172426-default/products")
+    fetch("https://mock.apidog.com/m1/1178355-1172455-default/products")
       .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
+      .then((json) => {
+        // AMANKAN SEMUA BENTUK RESPONSE
+        const list = Array.isArray(json)
+          ? json
+          : json.data || json.products || [];
+
+        setProducts(list);
         setLoading(false);
       })
       .catch((err) => {
         console.log("API ERROR:", err);
+        setProducts([]);
         setLoading(false);
       });
   }, []);
 
-  const filteredData = (products || []).filter((item) =>
-  item.name.toLowerCase().includes(search.toLowerCase())
-);
+  // ✅ FILTER AMAN
+  const filteredData = products.filter((item) =>
+    item?.name?.toLowerCase().includes(search.toLowerCase())
+  );
 
   if (loading) {
     return (
@@ -67,7 +74,9 @@ export default function Home() {
       {/* LIST PRODUK */}
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.id.toString()}
+        keyExtractor={(item, index) =>
+          item?.id?.toString() || index.toString()
+        }
         renderItem={({ item }) => (
           <View style={styles.card}>
             {/* DETAIL */}
@@ -79,8 +88,13 @@ export default function Home() {
                 })
               }
             >
-              {/* 🔥 IMAGE DARI API */}
-              <Image source={{ uri: item.image }} style={styles.image} />
+              {/* IMAGE AMAN */}
+              <Image
+                source={{
+                  uri: item.image || "https://via.placeholder.com/400x300",
+                }}
+                style={styles.image}
+              />
 
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>{item.price}</Text>
