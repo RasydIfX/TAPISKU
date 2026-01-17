@@ -6,7 +6,7 @@ export default function History() {
   const [orders, setOrders] = useState<any[]>([]);
 
   useEffect(() => {
-    fetch("https://mock.apidog.com/m2/1177348-1171401-default/26849317?apidogApiId=26849317")
+    fetch("https://mock.apidog.com/m1/1178355-1172455-default/history")
       .then(res => res.json())
       .then(data => setOrders(data))
       .catch(err => console.log(err));
