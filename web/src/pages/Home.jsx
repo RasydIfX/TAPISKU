@@ -1,25 +1,14 @@
-import { useEffect, useState } from "react";
-import { getProducts } from "../services/api";
+import { products } from "../data/products";
+import ProductCard from "../components/ProductCard";
 
 export default function Home() {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    getProducts().then(setProducts);
-  }, []);
-
   return (
-    <div style={{ padding: 20 }}>
-      <h1>🧵 TapisKu Lampung</h1>
+    <div className="container">
+      <h2>Koleksi Tapis Lampung</h2>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 20 }}>
-        {products.map((p) => (
-          <div key={p.id} style={{ border: "1px solid #ddd", padding: 16 }}>
-            <img src={p.image} width="100%" />
-            <h3>{p.name}</h3>
-            <p>{p.price}</p>
-            <button>Tambah ke Keranjang</button>
-          </div>
+      <div className="grid">
+        {products.map(p => (
+          <ProductCard key={p.id} product={p} />
         ))}
       </div>
     </div>
