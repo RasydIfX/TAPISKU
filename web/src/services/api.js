@@ -1,4 +1,4 @@
-const API_URL = "https://mock.apidog.com/m1/1178355-1172455-default";
+const API_URL = "http://127.0.0.1:3658/m1/1178355-1172455-default/products";
 
 export const getProducts = async () => {
   const res = await fetch(`${API_URL}/products`);
