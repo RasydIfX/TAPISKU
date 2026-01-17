@@ -1,18 +1,26 @@
-import { useCart } from "../context/CartContext";
-
-export default function Navbar() {
-  const { cart } = useCart();
-
+export default function Navbar({ current, setCurrent }) {
   return (
-    <div className="navbar">
-      <div className="logo">🧵 TapisKu</div>
+    <nav className="topnav">
+      <span
+        className={current === "home" ? "active" : ""}
+        onClick={() => setCurrent("home")}
+      >
+        Home
+      </span>
 
-      <div className="cart-icon">
-        🛒
-        {cart.length > 0 && (
-          <span className="cart-badge">{cart.length}</span>
-        )}
-      </div>
-    </div>
+      <span
+        className={current === "library" ? "active" : ""}
+        onClick={() => setCurrent("library")}
+      >
+        Library
+      </span>
+
+      <span
+        className={current === "contact" ? "active" : ""}
+        onClick={() => setCurrent("contact")}
+      >
+        Contact
+      </span>
+    </nav>
   );
 }
