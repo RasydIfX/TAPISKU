@@ -23,7 +23,7 @@ export default function Home() {
 
   // ✅ FETCH DARI APIDOG
   useEffect(() => {
-    fetch("https://mock.apidog.com/m2/1177348-1171401-default/26806925")
+    fetch("https://mock.apidog.com/m1/1178326-1172426-default/products")
       .then((res) => res.json())
       .then((data) => {
         setProducts(data);

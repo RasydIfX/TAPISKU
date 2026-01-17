@@ -1,1 +1,0 @@
-export const API_URL = "https://mock.apidog.com/m1/TESTING_ID";

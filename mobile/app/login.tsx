@@ -1,72 +1,65 @@
 import { View, Text, TextInput, Pressable, StyleSheet } from "react-native";
-import { router } from "expo-router";
 import { useState } from "react";
-import { Colors } from "../constants/colors";
+import { login as loginApi } from "../src/services/auth";
+import { useAuth } from "./context/AuthContext";
+import { router } from "expo-router";
+
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    try {
+       const res = await loginApi(email, password);
+      await login(res);
+      router.replace("/(tabs)");
+    } catch (e) {
+      alert("Login gagal");
+    }
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>🧵 TapisKu</Text>
-      <Text style={styles.subtitle}>Login</Text>
+      <Text style={styles.title}>Login</Text>
 
       <TextInput
-        placeholder="Nama pengguna"
-        value={username}
-        onChangeText={setUsername}
+        placeholder="Email"
         style={styles.input}
+        value={email}
+        onChangeText={setEmail}
       />
 
-      <Pressable
-        style={styles.button}
-        onPress={() => {
-          if (!username) return;
-          router.replace("/(tabs)");
-        }}
-      >
-        <Text style={styles.buttonText}>Masuk</Text>
+      <TextInput
+        placeholder="Password"
+        style={styles.input}
+        secureTextEntry
+        value={password}
+        onChangeText={setPassword}
+      />
+
+      <Pressable style={styles.button} onPress={handleLogin}>
+        <Text style={styles.buttonText}>Login</Text>
       </Pressable>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    padding: 24,
-    backgroundColor: Colors.background,
-  },
-  title: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: Colors.primary,
-    textAlign: "center",
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 18,
-    textAlign: "center",
-    marginBottom: 24,
-  },
+  container: { flex: 1, justifyContent: "center", padding: 20 },
+  title: { fontSize: 24, fontWeight: "bold", marginBottom: 20 },
   input: {
-    backgroundColor: "#fff",
-    padding: 14,
-    borderRadius: 10,
     borderWidth: 1,
-    borderColor: Colors.gold,
-    marginBottom: 16,
+    borderColor: "#ccc",
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 12,
   },
   button: {
-    backgroundColor: Colors.primary,
+    backgroundColor: "#6b4eff",
     padding: 14,
-    borderRadius: 10,
+    borderRadius: 8,
   },
-  buttonText: {
-    color: "#fff",
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 16,
-  },
+  buttonText: { color: "#fff", textAlign: "center", fontWeight: "bold" },
 });

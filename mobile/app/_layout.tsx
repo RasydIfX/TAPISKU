@@ -5,6 +5,7 @@ import "react-native-reanimated";
 
 import { useColorScheme } from "@/hooks/use-color-scheme";
 import { CartProvider } from "./context/CartContext";
+import { AuthProvider } from "./context/AuthContext";
 
 export const unstable_settings = {
   anchor: "(tabs)",
@@ -14,30 +15,32 @@ export default function RootLayout() {
   const colorScheme = useColorScheme();
 
   return (
-    <CartProvider>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <Stack>
-          {/* 🔐 LOGIN SEBAGAI HALAMAN DEPAN */}
-          <Stack.Screen
-            name="login"
-            options={{ headerShown: false }}
-          />
+    <AuthProvider>
+      <CartProvider>
+        <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+          <Stack>
+            {/* 🔐 LOGIN SEBAGAI HALAMAN DEPAN */}
+            <Stack.Screen
+              name="login"
+              options={{ headerShown: false }}
+            />
 
-          {/* 🏠 TAB UTAMA (HOME, CART, DLL) */}
-          <Stack.Screen
-            name="(tabs)"
-            options={{ headerShown: false }}
-          />
+            {/* 🏠 TAB UTAMA */}
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false }}
+            />
 
-          {/* (OPSIONAL) MODAL */}
-          <Stack.Screen
-            name="modal"
-            options={{ presentation: "modal", title: "Modal" }}
-          />
-        </Stack>
+            {/* MODAL */}
+            <Stack.Screen
+              name="modal"
+              options={{ presentation: "modal", title: "Modal" }}
+            />
+          </Stack>
 
-        <StatusBar style="auto" />
-      </ThemeProvider>
-    </CartProvider>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </CartProvider>
+    </AuthProvider>
   );
 }

@@ -1,15 +1,50 @@
-import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
+import { View, Text, FlatList, StyleSheet, Pressable, Alert } from "react-native";
 import { Colors } from "../../constants/colors";
 import { useCart } from "../context/CartContext";
 import { router } from "expo-router";
 
 export default function Cart() {
-  const { cart, removeFromCart } = useCart();
+  const { cart, removeFromCart, clearCart } = useCart();
 
   const total = cart.reduce((sum, item) => {
     const price = Number(item.price.replace(/\D/g, ""));
     return sum + price;
   }, 0);
+
+  // ✅ POST ORDER KE APIDOG
+  const submitOrder = async () => {
+    const orderData = {
+      date: new Date().toISOString().split("T")[0],
+      total: total,
+      items: cart.map((item) => ({
+        name: item.name,
+        price: Number(item.price.replace(/\D/g, "")),
+      })),
+    };
+
+    try {
+      const res = await fetch(
+        "https://mock.apidog.com/m2/1177348-1171401-default/26849672",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(orderData),
+        }
+      );
+
+      const data = await res.json();
+      console.log("ORDER SUCCESS:", data);
+
+      Alert.alert("Berhasil", "Order berhasil dibuat");
+      clearCart();
+      router.push("/history");
+    } catch (error) {
+      console.log("ORDER ERROR:", error);
+      Alert.alert("Error", "Gagal checkout");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -38,11 +73,8 @@ export default function Cart() {
             Total: Rp {total.toLocaleString("id-ID")}
           </Text>
 
-          {/* CHECKOUT */}
-          <Pressable
-            style={styles.checkout}
-            onPress={() => router.push("/checkout")}
-          >
+          {/* ✅ CHECKOUT LANGSUNG POST */}
+          <Pressable style={styles.checkout} onPress={submitOrder}>
             <Text style={styles.checkoutText}>Checkout</Text>
           </Pressable>
         </>
