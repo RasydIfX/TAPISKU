@@ -1,23 +1,20 @@
 export const products = [
   {
     id: 1,
-    name: "Tapis Raja Tihang",
-    price: 1250000,
-    image: "/tapis.jpg",
-    description: "Tapis tradisional Lampung dengan motif emas asli."
+    name: "Tapis Lampung Emas",
+    price: 1500000,
+    image: "https://picsum.photos/400/300?1",
   },
   {
     id: 2,
-    name: "Tapis Pucuk Rebung",
-    price: 950000,
-    image: "/tapis.jpg",
-    description: "Motif khas Lampung, elegan dan bernilai budaya tinggi."
+    name: "Tapis Lampung Motif Kapal",
+    price: 2300000,
+    image: "https://picsum.photos/400/300?2",
   },
   {
     id: 3,
-    name: "Tapis Antik Lampung",
-    price: 1800000,
-    image: "/tapis.jpg",
-    description: "Tapis antik koleksi terbatas."
-  }
+    name: "Tapis Lampung Antik",
+    price: 3200000,
+    image: "https://picsum.photos/400/300?3",
+  },
 ];
