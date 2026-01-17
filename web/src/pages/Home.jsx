@@ -1,35 +1,33 @@
 import { useState } from "react";
 import { products } from "../data/products";
+import { useCart } from "../context/CartContext";
+import Navbar from "../components/Navbar";
 
 export default function Home() {
   const [search, setSearch] = useState("");
+  const { addToCart } = useCart();
 
-  // FILTER PRODUK
   const filteredProducts = products.filter((p) =>
     p.name.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="container">
-      <h1 className="header">🧵 Koleksi Tapis Lampung</h1>
+    <>
+      <Navbar />
 
-      {/* SEARCH BAR */}
-      <div className="search-wrapper">
-        <input
-          type="text"
-          placeholder="Cari tapis Lampung..."
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="search-input"
-        />
-      </div>
+      <div className="container">
+        <div className="search-wrapper">
+          <input
+            type="text"
+            placeholder="Cari tapis Lampung..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="search-input"
+          />
+        </div>
 
-      {/* GRID PRODUK */}
-      <div className="grid">
-        {filteredProducts.length === 0 ? (
-          <p>Produk tidak ditemukan 😢</p>
-        ) : (
-          filteredProducts.map((p) => (
+        <div className="grid">
+          {filteredProducts.map((p) => (
             <div key={p.id} className="card">
               <img src={p.image} alt={p.name} className="image" />
 
@@ -39,14 +37,17 @@ export default function Home() {
                   Rp {p.price.toLocaleString("id-ID")}
                 </div>
 
-                <button className="button">
+                <button
+                  className="button"
+                  onClick={() => addToCart(p)}
+                >
                   Tambah ke Keranjang
                 </button>
               </div>
             </div>
-          ))
-        )}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }

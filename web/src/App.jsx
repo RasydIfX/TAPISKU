@@ -1,5 +1,11 @@
+import { CartProvider } from "./context/CartContext";
 import Home from "./pages/Home";
+import "./index.css";
 
 export default function App() {
-  return <Home />;
+  return (
+    <CartProvider>
+      <Home />
+    </CartProvider>
+  );
 }
