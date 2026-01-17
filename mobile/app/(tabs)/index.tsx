@@ -8,35 +8,44 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { router } from "expo-router";
 import { Colors } from "../../constants/colors";
 import { useCart } from "../context/CartContext";
 
-const DATA = [
-  {
-    id: "1",
-    name: "Tapis Jung Sarat",
-    price: "Rp 2.500.000",
-    image: require("../../assets/images/kain jung.jpg"),
-  },
-  {
-    id: "2",
-    name: "Tapis Raja Medal",
-    price: "Rp 3.000.000",
-    image: require("../../assets/images/kain raja medal.jpg"),
-  },
-];
-
 export default function Home() {
   const [search, setSearch] = useState("");
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   // ✅ CART GLOBAL
   const { cart, addToCart } = useCart();
 
-  const filteredData = DATA.filter((item) =>
-    item.name.toLowerCase().includes(search.toLowerCase())
-  );
+  // ✅ FETCH DARI APIDOG
+  useEffect(() => {
+    fetch("https://mock.apidog.com/m2/1177348-1171401-default/26806925")
+      .then((res) => res.json())
+      .then((data) => {
+        setProducts(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log("API ERROR:", err);
+        setLoading(false);
+      });
+  }, []);
+
+  const filteredData = (products || []).filter((item) =>
+  item.name.toLowerCase().includes(search.toLowerCase())
+);
+
+  if (loading) {
+    return (
+      <View style={styles.container}>
+        <Text>Loading produk...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -47,7 +56,7 @@ export default function Home() {
         <Text style={styles.cartInfo}>🛒 Keranjang: {cart.length}</Text>
       </Pressable>
 
-      {/* SEARCH INPUT */}
+      {/* SEARCH */}
       <TextInput
         placeholder="Cari tapis..."
         value={search}
@@ -58,10 +67,10 @@ export default function Home() {
       {/* LIST PRODUK */}
       <FlatList
         data={filteredData}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item) => item.id.toString()}
         renderItem={({ item }) => (
           <View style={styles.card}>
-            {/* DETAIL PRODUK */}
+            {/* DETAIL */}
             <Pressable
               onPress={() =>
                 router.push({
@@ -70,20 +79,19 @@ export default function Home() {
                 })
               }
             >
-              <Image source={item.image} style={styles.image} />
+              {/* 🔥 IMAGE DARI API */}
+              <Image source={{ uri: item.image }} style={styles.image} />
+
               <Text style={styles.name}>{item.name}</Text>
               <Text style={styles.price}>{item.price}</Text>
             </Pressable>
 
-            {/* TAMBAH KE KERANJANG */}
+            {/* TAMBAH KE CART */}
             <Pressable
               style={styles.addButton}
               onPress={() => {
                 addToCart(item);
-                Alert.alert(
-                  "Berhasil",
-                  `${item.name} ditambahkan ke keranjang`
-                );
+                Alert.alert("Berhasil", `${item.name} ditambahkan`);
               }}
             >
               <Text style={styles.addText}>Tambah ke Keranjang</Text>

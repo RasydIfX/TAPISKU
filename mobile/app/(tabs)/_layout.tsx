@@ -53,7 +53,18 @@ export default function TabLayout() {
             <Ionicons name="person" size={28} color={color} />
           ),
         }}
-      />
+            />
+        {/* PROFILE */}
+       <Tabs.Screen
+        name="history"
+        options={{
+          title: "History",
+          tabBarIcon: ({ color }) => (
+            <Ionicons name="book-outline" size={28} color={color} />
+          ),
+        }}
+            />
+      
     </Tabs>
   );
 }

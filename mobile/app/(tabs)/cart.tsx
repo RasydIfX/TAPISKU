@@ -1,9 +1,10 @@
 import { View, Text, FlatList, StyleSheet, Pressable } from "react-native";
 import { Colors } from "../../constants/colors";
 import { useCart } from "../context/CartContext";
+import { router } from "expo-router";
 
 export default function Cart() {
-  const { cart, clearCart, removeFromCart } = useCart();
+  const { cart, removeFromCart } = useCart();
 
   const total = cart.reduce((sum, item) => {
     const price = Number(item.price.replace(/\D/g, ""));
@@ -36,6 +37,14 @@ export default function Cart() {
           <Text style={styles.total}>
             Total: Rp {total.toLocaleString("id-ID")}
           </Text>
+
+          {/* CHECKOUT */}
+          <Pressable
+            style={styles.checkout}
+            onPress={() => router.push("/checkout")}
+          >
+            <Text style={styles.checkoutText}>Checkout</Text>
+          </Pressable>
         </>
       )}
     </View>
@@ -77,5 +86,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginTop: 12,
     color: Colors.gold,
+  },
+  checkout: {
+    marginTop: 16,
+    backgroundColor: Colors.primary,
+    padding: 14,
+    borderRadius: 10,
+  },
+  checkoutText: {
+    color: "#fff",
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
